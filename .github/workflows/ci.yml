@@ -18,4 +18,10 @@ jobs:
 
       - name: "Check node version"
         run: node --version
+
+      - name: "Clone the repo"
+        uses: actions/checkout@v2
+
+      - name: "Install dependencies"
+        run: npm install
         
