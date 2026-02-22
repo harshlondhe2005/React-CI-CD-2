@@ -2,7 +2,7 @@ name: "CD Pipeline"
 
 on:
   workflow_run:
-    workflows: ["React CI/CD Pipeline"]
+    workflows: ["Sample React CI Pipeline / Workflow"]
     types:
       - completed
 
@@ -11,12 +11,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v4
+
       - name: "Setup nodejs"
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: "Setup vercel cli"
+      - name: "Install Vercel CLI"
         run: npm install -g vercel
 
       - name: "Download build files"
@@ -26,7 +29,5 @@ jobs:
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ github.token }}
 
-      - name: "Deploy to vercel"
-        run: vercel --prod --token=$VERCEL_TOKEN --confirm
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      - name: "Deploy to Vercel"
+        run: vercel --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
